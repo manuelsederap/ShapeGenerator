@@ -1,0 +1,48 @@
+<h1>Shape Generator</h1>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- Command -->
+  <div>
+    <mat-form-field>
+      <mat-label>Type a command to generate shape</mat-label>
+      <input matInput class="form-control" formControlName="input" required placeholder="Draw a [shape] with a side length of [number]">
+      <mat-error *ngIf="form.controls['input'].errors?.['required']">
+        Command input is required.
+      </mat-error>
+      <mat-error *ngIf="form.get('input')?.hasError('invalidFormat')">
+        <div>
+          {{errorMessage}}
+        </div>
+        <br />
+        <div style="color: black;">
+          List of Shapes available:
+          [ isosceles triangle, scalene triangle, equilateral triangle, rectangle, square,
+          parallelogram, pentagon, hexagon, heptagon, octagon, circles ]
+        </div>
+      </mat-error>
+      <mat-error *ngIf="form.get('input')?.hasError('invalidValue')">
+        Inputted value must not greater than 1000
+      </mat-error>
+      <mat-error *ngIf="form.get('input')?.hasError('inputScaleneValue')">
+        Scalene Triangle length must not equal to each other.
+      </mat-error>
+      <mat-error *ngIf="form.get('input')?.hasError('inputIsoscelesValue')">
+        Isosceles Triangle base length must not greater than to side length.
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <br />
+  <br />
+  <br />
+  <br />
+  <!-- Generate Button -->
+  <button mat-flat-button color="primary" type="submit" [disabled]="!form.valid">
+    Generate Shape
+  </button>
+</form>
+<br />
+<button mat-flat-button color="warn" (click)="clearCanvas()">
+  Clear Shape
+</button>
+<div>
+  <canvas #canvas width="1500" height="700"></canvas>
+</div>

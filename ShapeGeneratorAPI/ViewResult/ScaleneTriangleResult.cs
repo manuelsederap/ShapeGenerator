@@ -16,5 +16,20 @@
         /// CSide length of ScaleneTriangleResult
         /// </summary>
         public double CSide { get; set; }
+
+        /// <summary>
+        /// Angle A Side of ScaleneTriangleResult
+        /// </summary>
+        public double AAngle { get; set; }
+
+        /// <summary>
+        /// Angle B Side of ScaleneTriangleResult
+        /// </summary>
+        public double BAngle { get; set; }
+
+        /// <summary>
+        /// Angle C Side of ScaleneTriangleResult
+        /// </summary>
+        public double CAngle {  get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ShapeGeneratorAPI.Shapes
 {
-    public class ScaleneTriangle : Shape
+    public class ScaleneTriangle
     {
         /// <summary>
         /// A Side of Scalene Triangle
@@ -17,6 +17,28 @@
         /// </summary>
         public double CSide { get; set; }
 
+        /// <summary>
+        /// A side angle of Scalene Triangle
+        /// </summary>
+        public double AAngle {  get; set; }
+
+        /// <summary>
+        /// B side angle of Scalene Triangle
+        /// </summary>
+        public double BAngle { get; set; }
+
+        /// <summary>
+        /// C side Angle of Scalene Triangle
+        /// </summary>
+        public double CAngle {  get; set; }
+
+        /// <summary>
+        /// Method to Calculate the area of scalene triangle
+        /// </summary>
+        /// <param name="aSide"></param>
+        /// <param name="bSide"></param>
+        /// <param name="cSide"></param>
+        /// <returns></returns>
         public double calculateArea(double aSide, double bSide, double cSide)
         {
             // Calculate the semi-perimeter
@@ -29,13 +51,58 @@
                 * (semiPerimeter - cSide));
 
             return Math.Round(Area, 2);
-         }
+        }
 
+        /// <summary>
+        /// Method to calculate the perimeter of scalene triangle
+        /// </summary>
+        /// <param name="aSide"></param>
+        /// <param name="bSide"></param>
+        /// <param name="cSide"></param>
+        /// <returns></returns>
         public double calculatePerimeter(double aSide, double bSide, double cSide)
         {
             double perimeter = aSide + bSide + cSide;
 
             return perimeter;
+        }
+
+        /// <summary>
+        /// Method to calculate the A-Angle Side of Scalene Triangle
+        /// </summary>
+        /// <param name="aSide"></param>
+        /// <param name="bSide"></param>
+        /// <param name="cSide"></param>
+        /// <returns></returns>
+        public double calculateAAngle(double aSide, double bSide, double cSide)
+        {
+            double aAngle = Math.Acos((bSide * bSide + cSide * cSide - aSide * aSide) / (2 * bSide * cSide));
+            return Math.Round(aAngle, 2);
+        }
+
+        /// <summary>
+        /// Method to calculate the B-Angle Side of Scalene Triangle
+        /// </summary>
+        /// <param name="aSide"></param>
+        /// <param name="bSide"></param>
+        /// <param name="cSide"></param>
+        /// <returns></returns>
+        public double calculateBAngle(double aSide, double bSide, double cSide)
+        {
+            double bAngle = Math.Acos((cSide * cSide + aSide * aSide - bSide * bSide) / (2 * cSide * aSide));
+            return Math.Round(bAngle, 2);
+        }
+
+        /// <summary>
+        /// Method to calculate the C-Angle side of scalene triangle
+        /// </summary>
+        /// <param name="aAngle"></param>
+        /// <param name="bAngle"></param>
+        /// <returns></returns>
+        public double calculateCAngle(double aAngle, double bAngle)
+        {
+            double cAngle = Math.PI - aAngle - bAngle;
+            return Math.Round(cAngle, 2);
         }
     }
 }

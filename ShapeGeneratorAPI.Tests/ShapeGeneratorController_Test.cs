@@ -34,14 +34,12 @@ namespace ShapeGeneratorAPI.Tests
         {
             // Arrange
             double expectedHeight = 8;
-            double expectedArea = 48;
             
             // Act
-            var response = _controller.GetIsoscelesTriangle(10, 12).Value;
+            var response = _controller.GetIsoscelesTriangle("10", "12").Value;
 
             // Assert
             Assert.Equal(expectedHeight, response?.Height);
-            Assert.Equal(expectedArea, response?.Area);
         }
 
         /// <summary>
@@ -52,15 +50,17 @@ namespace ShapeGeneratorAPI.Tests
         public async Task GetScaleneTriangle()
         {
             // Arrange
-            double expectedPerimeter = 81;
-            double expectedArea = 238.87;
+            double aAngle = 0.45;
+            double bAngle = 1.21;
+            double cAngle = 1.48;
 
             // Act
-            var response = _controller.GetScaleneTriangle(15, 32, 34).Value;
+            var response = _controller.GetScaleneTriangle("15", "32", "34").Value;
 
             // Assert
-            Assert.Equal(expectedArea, response?.Area);
-            Assert.Equal(expectedPerimeter, response?.Perimeter);
+            Assert.Equal(aAngle, response?.AAngle);
+            Assert.Equal(bAngle, response?.BAngle);
+            Assert.Equal(cAngle, response?.CAngle);
         }
     }
 }

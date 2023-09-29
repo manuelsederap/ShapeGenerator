@@ -6,7 +6,7 @@ using ShapeGeneratorAPI.ViewResult;
 
 namespace ShapeGeneratorAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ShapeGeneratorController : ControllerBase
     {
@@ -23,43 +23,45 @@ namespace ShapeGeneratorAPI.Controllers
 
 
         [HttpGet]
-        public ActionResult<ShapeResult> GetIsoscelesTriangle(double sideLength, double baseLength)
+        public ActionResult<IsoscelesTriangleResult> GetIsoscelesTriangle(string sideLength, string baseLength)
         {
-            _isoscelesTriangle.Height = _isoscelesTriangle.calculateHeight(sideLength, baseLength);
-            _isoscelesTriangle.Area = _isoscelesTriangle.calculateArea(baseLength, _isoscelesTriangle.Height);
-            _isoscelesTriangle.Perimeter = _isoscelesTriangle.calculatePerimeter(sideLength, baseLength);
+            var sLength = Double.Parse(sideLength);
+            var bLength = Double.Parse(baseLength);
+            var height = _isoscelesTriangle.calculateHeight(sLength, bLength);
 
             IsoscelesTriangleResult isoscelesTriangleResult = new()
             {
                 Name = "IsoscelesTriangle",
                 isValidResponse = true,
-                message = "Ok",
-                Area = _isoscelesTriangle.Area,
-                Height = _isoscelesTriangle.Height,
-                BaseLength = baseLength,
-                SideLength = sideLength,
-                Perimeter = _isoscelesTriangle.Perimeter
+                Height = height,
+                BaseLength = sLength,
+                SideLength = bLength,
             };
 
             return isoscelesTriangleResult;
         }
 
         [HttpGet]
-        public ActionResult<ShapeResult> GetScaleneTriangle(double aSide, double bSide, double cSide)
+        public ActionResult<ScaleneTriangleResult> GetScaleneTriangle(string aSide, string bSide, string cSide)
         {
-            _scalenTriangle.Area = _scalenTriangle.calculateArea(aSide, bSide, cSide);
-            _scalenTriangle.Perimeter = _scalenTriangle.calculatePerimeter(aSide, bSide, cSide);
+            var ASide = Double.Parse(aSide);
+            var BSide = Double.Parse(bSide);
+            var CSide = Double.Parse(cSide);
+
+            var aAngle = _scalenTriangle.calculateAAngle(ASide, BSide, CSide);
+            var bAngle = _scalenTriangle.calculateBAngle(ASide, BSide, CSide);
+            var cAngle = _scalenTriangle.calculateCAngle(aAngle, bAngle);
 
             ScaleneTriangleResult scaleneTriangleResult = new()
             {
                 Name = "ScaleneTriangle",
                 isValidResponse = true,
-                message = "Ok",
-                Area = _scalenTriangle.Area,
-                Perimeter = _scalenTriangle.Perimeter,
-                ASide = aSide,
-                BSide = bSide,
-                CSide = cSide
+                ASide = ASide,
+                BSide = BSide,
+                CSide = CSide,
+                AAngle = aAngle,
+                BAngle = bAngle,
+                CAngle = cAngle
             };
 
             return scaleneTriangleResult;
