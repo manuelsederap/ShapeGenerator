@@ -8,7 +8,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Shapes add scope for dependency injection
+// Shapes need to register the services for dependency injection, new instance created every request
 builder.Services.AddScoped<IsoscelesTriangle>();
 builder.Services.AddScoped<ScaleneTriangle>();
 builder.Services.AddScoped<EquilateralTriangle>();
