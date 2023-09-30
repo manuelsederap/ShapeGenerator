@@ -39,7 +39,7 @@
         /// <param name="bSide"></param>
         /// <param name="cSide"></param>
         /// <returns></returns>
-        public double calculateArea(double aSide, double bSide, double cSide)
+        public double CalculateArea(double aSide, double bSide, double cSide)
         {
             // Calculate the semi-perimeter
             double semiPerimeter = (aSide + bSide + cSide) / 2;
@@ -50,7 +50,7 @@
                 * (semiPerimeter - bSide)
                 * (semiPerimeter - cSide));
 
-            return Math.Round(Area, 2);
+            return Area;
         }
 
         /// <summary>
@@ -60,7 +60,7 @@
         /// <param name="bSide"></param>
         /// <param name="cSide"></param>
         /// <returns></returns>
-        public double calculatePerimeter(double aSide, double bSide, double cSide)
+        public double CalculatePerimeter(double aSide, double bSide, double cSide)
         {
             double perimeter = aSide + bSide + cSide;
 
@@ -74,10 +74,10 @@
         /// <param name="bSide"></param>
         /// <param name="cSide"></param>
         /// <returns></returns>
-        public double calculateAAngle(double aSide, double bSide, double cSide)
+        public double CalculateAAngle(double aSide, double bSide, double cSide)
         {
             double aAngle = Math.Acos((bSide * bSide + cSide * cSide - aSide * aSide) / (2 * bSide * cSide));
-            return Math.Round(aAngle, 2);
+            return aAngle;
         }
 
         /// <summary>
@@ -87,10 +87,10 @@
         /// <param name="bSide"></param>
         /// <param name="cSide"></param>
         /// <returns></returns>
-        public double calculateBAngle(double aSide, double bSide, double cSide)
+        public double CalculateBAngle(double aSide, double bSide, double cSide)
         {
             double bAngle = Math.Acos((cSide * cSide + aSide * aSide - bSide * bSide) / (2 * cSide * aSide));
-            return Math.Round(bAngle, 2);
+            return bAngle;
         }
 
         /// <summary>
@@ -99,10 +99,10 @@
         /// <param name="aAngle"></param>
         /// <param name="bAngle"></param>
         /// <returns></returns>
-        public double calculateCAngle(double aAngle, double bAngle)
+        public double CalculateCAngle(double aAngle, double bAngle)
         {
             double cAngle = Math.PI - aAngle - bAngle;
-            return Math.Round(cAngle, 2);
+            return cAngle;
         }
     }
 }

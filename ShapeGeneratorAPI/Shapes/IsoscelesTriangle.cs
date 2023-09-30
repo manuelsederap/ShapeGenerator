@@ -18,7 +18,7 @@
         /// <param name="baseLength"></param>
         /// <param name="sidesLength"></param>
         /// <returns></returns>
-        public double calculateHeight(double sideLength, double baseLength)
+        public double CalculateHeight(double sideLength, double baseLength)
         {
             // get the distance from the side to center
             // formula a2 + b2 = c2
@@ -34,7 +34,7 @@
         /// <param name="baseLength"></param>
         /// <param name="height"></param>
         /// <returns></returns>
-        public new double calculateArea(double baseLength, double height)
+        public new double CalculateArea(double baseLength, double height)
         {
             double Area = 0.5 * baseLength * height;
 
@@ -47,7 +47,7 @@
         /// <param name="sideLength"></param>
         /// <param name="baseLength"></param>
         /// <returns></returns>
-        public double calculatePerimeter(double sideLength, double baseLength)
+        public double CalculatePerimeter(double sideLength, double baseLength)
         {
             double perimeter = 2 * sideLength + baseLength;
 

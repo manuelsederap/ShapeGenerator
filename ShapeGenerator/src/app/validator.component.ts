@@ -85,22 +85,37 @@ export abstract class ValidatorComponent {
   formatCommandAsyncValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       const inputString = control.value;
-      const formatPattern = /^Draw a (isosceles triangle with a side length of \d+ and base length of \d+|scalene triangle with a A-Side length of \d+, B-Side length of \d+, and C-Side length of \d+|(equilateral triangle|rectangle|square|parallelogram|pentagon|hexagon|heptagon|octagon|circle) with a side length of \d+)$/
+
+      const formatPattern = /^Draw a (isosceles triangle with a side length of \d+ and base length of \d+|scalene triangle with a A-Side length of \d+, B-Side length of \d+, and C-Side length of \d+|rectangle with a length of \d+ and width of \d+|circle with a diameter of \d+|parallelogram with a height of \d+ and side length of \d+|(equilateral triangle|square|pentagon|hexagon|heptagon|octagon) with a side length of \d+)$/
+
+
       const inputValue = this.form.get('input')?.value.toLowerCase();
 
       if (inputString && !formatPattern.test(inputString)) {
 
         if (inputValue.includes('isosceles triangle')) {
 
-          this.errorMessage = `For Isosceles Triangle, Please follow this format: ${this.getisoscelesErrorMessage()}`;
+          this.errorMessage = `For Isosceles Triangle, Please follow this sample format: ${this.getisoscelesErrorMessage()}`;
 
         } else if (inputValue.includes('scalene triangle')) {
 
-          this.errorMessage = `For Scalene Triangle, Please follow this format: ${this.getScaleneErrorMessage()}`;
+          this.errorMessage = `For Scalene Triangle, Please follow this sample format: ${this.getScaleneErrorMessage()}`;
+
+        } else if (inputValue.includes('rectangle')) {
+
+          this.errorMessage = `For rectangle, Please follow this sample format: ${this.getRectangleErrorMessage()}`;
+
+        } else if (inputValue.includes('circle')) {
+
+          this.errorMessage = `For circle, Please follow this sample format: ${this.getCircleErrorMessage()}`;
+
+        } else if (inputValue.includes('parallelogram')) {
+
+          this.errorMessage = `For parallelogram, Please follow this sample format: ${this.getParallelogramErrorMessage()}`;
 
         } else {
 
-          this.errorMessage = `Invalid Shape or Format, Please follow this format: ${this.getShapeErrorMessage()}`
+          this.errorMessage = `Invalid Shape or Format, Please follow this sample format: ${this.getShapeErrorMessage(inputValue)}`
         }
         return of({ invalidFormat: true });
       }
@@ -109,17 +124,46 @@ export abstract class ValidatorComponent {
   }
 
   getisoscelesErrorMessage() {
-    this.shapeErrorMessage = "Draw a isosceles triangle with a side length of 120 and base length of 100";
+    this.shapeErrorMessage = "Draw a isosceles triangle with a side length of 600 and base length of 300";
     return this.shapeErrorMessage;
   }
 
   getScaleneErrorMessage() {
-    this.shapeErrorMessage = "Draw a scalene triangle with a A-Side length of 150, B-Side length of 320, and C-Side length of 340";
+    this.shapeErrorMessage = "Draw a scalene triangle with a A-Side length of 340, B-Side length of 150, and C-Side length of 320";
     return this.shapeErrorMessage;
   }
 
-  getShapeErrorMessage() {
-    this.shapeErrorMessage = "Draw a square with a side length of 200";
+  getRectangleErrorMessage() {
+    this.shapeErrorMessage = "Draw a rectangle with a length of 600 and width of 300";
+    return this.shapeErrorMessage;
+  }
+
+  getCircleErrorMessage() {
+    this.shapeErrorMessage = "Draw a circle with a diameter of 300";
+    return this.shapeErrorMessage;
+  }
+
+  getParallelogramErrorMessage() {
+    this.shapeErrorMessage = "Draw a parallelogram with a height of 300 and side length of 500";
+    return this.shapeErrorMessage;
+  }
+
+  getShapeErrorMessage(inputValue: string) {
+    if (inputValue.includes('square')) {
+      this.shapeErrorMessage = "Draw a square with a side length of 500"
+    } else if (inputValue.includes('pentagon')) {
+      this.shapeErrorMessage = "Draw a pentagon with a side length of 500";
+    } else if (inputValue.includes('hexagon')) {
+      this.shapeErrorMessage = "Draw a hexagon with a side length of 500";
+    } else if (inputValue.includes('heptagon')) {
+      this.shapeErrorMessage = "Draw a heptagon with a side length of 500";
+    } else if (inputValue.includes('octagon')) {
+      this.shapeErrorMessage = "Draw a octagon with a side length of 500";
+    } else if (inputValue.includes('equilateral triangle')) {
+      this.shapeErrorMessage = "Draw a equilateral triangle with a side length of 500";
+    } else {
+      this.shapeErrorMessage = "Draw a square with a side length of 500";
+    }
     return this.shapeErrorMessage;
   }
 
@@ -129,6 +173,18 @@ export abstract class ValidatorComponent {
 
   getScaleneTriangleData(inputValue: string) {
     return inputValue.match(/A-Side length of (\d+), B-Side length of (\d+), and C-Side length of (\d+)/i);
+  }
+
+  getRectangleData(inputValue: string) {
+    return inputValue.match(/length of (\d+) and width of (\d+)/i);
+  }
+
+  getCircleData(inputValue: string) {
+    return inputValue.match(/diameter of (\d+)/i);
+  }
+
+  getParallelogramData(inputValue: string) {
+    return inputValue.match(/height of (\d+) and side length of (\d+)/i);
   }
 
   getShapesData(inputValue: string) {

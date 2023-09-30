@@ -8,8 +8,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Shapes add scope for dependency injection
 builder.Services.AddScoped<IsoscelesTriangle>();
 builder.Services.AddScoped<ScaleneTriangle>();
+builder.Services.AddScoped<EquilateralTriangle>();
+builder.Services.AddScoped<Rectangle>();
+builder.Services.AddScoped<Square>();
+builder.Services.AddScoped<Parallelogram>();
+builder.Services.AddScoped<Pentagon>();
+builder.Services.AddScoped<Hexagon>();
+builder.Services.AddScoped<Heptagon>();
+builder.Services.AddScoped<Octagon>();
+builder.Services.AddScoped<Circle>();
 
 var app = builder.Build();
 

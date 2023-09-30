@@ -26,7 +26,13 @@
         /// </summary>
         public double Perimeter { get; set; }
 
-        public double calculateArea(double Length, double Width)
+        /// <summary>
+        /// Calculate the Area of the Shape
+        /// </summary>
+        /// <param name="Length"></param>
+        /// <param name="Width"></param>
+        /// <returns></returns>
+        public double CalculateArea(double Length, double Width)
         {
             double Area = Length * Width;
 

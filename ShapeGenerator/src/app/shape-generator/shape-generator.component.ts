@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ValidatorComponent } from '../validator.component';
 import { ShapeGeneratorService } from '../shape-generator/shape-generator.service';
+import { ShapeDrawer } from '../shape-generator/shape-drawer';
 
 @Component({
   selector: 'app-shape-generator',
@@ -19,12 +20,13 @@ export class ShapeGeneratorComponent extends ValidatorComponent implements OnIni
   //command
   command!: string;
 
-  // canvas
+  // using viewchild to interact with DOM
+  // canvas, to access canvas need to be static true
   @ViewChild('canvas', { static: true }) myCanvas!: ElementRef;
-
   constructor(
     private fb: FormBuilder,
-    private shapeGeneratorService: ShapeGeneratorService
+    private shapeGeneratorService: ShapeGeneratorService,
+    private shapeDrawer: ShapeDrawer
   ) {
     super();
   }
@@ -35,11 +37,14 @@ export class ShapeGeneratorComponent extends ValidatorComponent implements OnIni
     })
   };
 
+  // Submit button for sending the request
   onSubmit() {
     const input = this.form.get('input')?.value.toLowerCase();
+    // Method to check what shape are inputted and get the info from backend
     this.sendRequestBasedOnShape(input)
   }
 
+  // When Clear button click, this method will clear canvas board
   clearCanvas() {
     const canvas: HTMLCanvasElement = this.myCanvas.nativeElement;
     const context = canvas.getContext('2d');
@@ -47,83 +52,197 @@ export class ShapeGeneratorComponent extends ValidatorComponent implements OnIni
   }
 
   sendRequestBasedOnShape(input : string) {
+    const matches = this.getIsoscelesTriangleData(input)
     if (input.includes('isosceles triangle')) {
-      // send API request to isosceles
-      const matches = this.getIsoscelesTriangleData(input)
       if (matches && matches.length === 3) {
-        const sideLength: number = parseInt(matches[1], 10)
-        const baseLength: number = parseInt(matches[2], 10);
-        const data = { sideLength: sideLength, baseLength : baseLength}
-        this.shapeGeneratorService.getIsoscelesTriangle(data).subscribe(result => {
-          console.log(result);
-          this.drawIsoscelesTriangle(result);
-        }, error => console.error(error))
+      // send API request to get isosceles triangle info
+        this.getIsoscelesTriangle(matches);
       }
     }
 
     if (input.includes('scalene triangle')) {
-      // send API request to scalene
       const matches = this.getScaleneTriangleData(input)
       if (matches) {
-        const aSide: number = parseInt(matches[1], 10);
-        const bSide: number = parseInt(matches[2], 10);
-        const cSide: number = parseInt(matches[3], 10);
+      // send API request to get scalene triangle info
+        this.getScaleneTriangle(matches);
+      }
+    }
 
-        const data = { aSide: aSide, bSide: bSide, cSide: cSide }
-        this.shapeGeneratorService.getScaleneTriangle(data).subscribe(result => {
-          this.drawScaleneTriangle(result);
-        }, error => console.error(error));
+    if (input.includes('equilateral triangle')) {
+      const matches = this.getShapesData(input);
+      if (matches) {
+      // send API request to get equilateral triangle info
+        this.getEquilateralTriangle(matches);
+      }
+    }
+
+    if (input.includes('rectangle')) {
+      const matches = this.getRectangleData(input);
+      if (matches) {
+      // send API request to  get rectangle info
+        this.getRectangle(matches);
+      }
+    }
+
+    if (input.includes('square')) {
+      const matches = this.getShapesData(input);
+      if (matches) {
+      // send API request to get square info
+        this.getSquare(matches);
+      }
+    }
+
+    if (input.includes('parallelogram')) {
+      const matches = this.getParallelogramData(input);
+      if (matches) {
+      // send API request to get parallelogram info
+        this.getParallelogram(matches);
+      }
+    }
+
+    if (input.includes('pentagon')) {
+      const matches = this.getShapesData(input);
+      if (matches) {
+      // send API request to get pentagon info
+        this.getPentagon(matches);
+      }
+    }
+
+    if (input.includes('hexagon')) {
+      const matches = this.getShapesData(input);
+      if (matches) {
+      // send API request to get hexagon info
+        this.getHexagon(matches);
+      }
+    }
+
+    if (input.includes('heptagon')) {
+      const matches = this.getShapesData(input);
+      if (matches) {
+      // send API request to get heptagon info
+        this.getHeptagon(matches);
+      }
+    }
+
+    if (input.includes('octagon')) {
+      const matches = this.getShapesData(input);
+      if (matches) {
+      // send API request to get octagon info
+        this.getOctagon(matches);
+      }
+    }
+
+    if (input.includes('circle')) {
+      const matches = this.getCircleData(input);
+      if (matches) {
+      // send API request to get circle info
+        this.getCircle(matches);
       }
     }
   }
 
-  // Method to draw Isosceles Triangle into canvas
-  drawIsoscelesTriangle(result : any) {
+  getIsoscelesTriangle = (matches: RegExpMatchArray) => {
     const canvas: HTMLCanvasElement = this.myCanvas.nativeElement;
-    const context = canvas.getContext('2d');
+    const sideLength: number = parseInt(matches[1], 10)
+    const baseLength: number = parseInt(matches[2], 10);
+    const data = { sideLength: sideLength, baseLength: baseLength }
+    this.shapeGeneratorService.sendIsoscelesTriangle(data).subscribe(result => {
+      this.shapeDrawer.drawIsoscelesTriangle(result, canvas);
+    }, error => console.error(error))
+  };
 
-    // Calculate center of the canvas
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-
-    // Define triangle vertices
-    const x1 = centerX;
-    const y1 = centerY - result.height / 2;
-    const x2 = centerX - result.baseLength / 2;
-    const y2 = centerY + result.height / 2;
-    const x3 = centerX + result.baseLength / 2;
-    const y3 = y2;
-
-    // Draw the triangle
-    context?.beginPath();
-    context?.moveTo(x1, y1);
-    context?.lineTo(x2, y2);
-    context?.lineTo(x3, y3);
-    context?.lineTo(x1, y1);
-    context?.stroke();
-  }
-
-  // Method to draw Scalene Triangle into canvas
-  drawScaleneTriangle(result: any) {
+  getScaleneTriangle = (matches: RegExpMatchArray) => {
     const canvas: HTMLCanvasElement = this.myCanvas.nativeElement;
-    const context = canvas.getContext('2d');
+    const aSide: number = parseInt(matches[1], 10);
+    const bSide: number = parseInt(matches[2], 10);
+    const cSide: number = parseInt(matches[3], 10);
 
-    // Define coordinates of vertices
-    const x1 = 300;
-    const y1 = 500;
-    const x2 = x1 + result.cSide;
-    const y2 = y1;
-    const x3 = x1 + (result.bSide * Math.cos(result.cAngle));
-    const y3 = y1 - (result.bSide * Math.sin(result.cAngle));
+    const data = { aSide: aSide, bSide: bSide, cSide: cSide }
+    this.shapeGeneratorService.sendScaleneTriangle(data).subscribe(result => {
+      this.shapeDrawer.drawScaleneTriangle(result, canvas);
+    }, error => console.error(error));
+  };
 
-    // Draw the triangle
-    context?.beginPath();
-    context?.moveTo(x1, y1);
-    context?.lineTo(x2, y2);
-    context?.lineTo(x3, y3);
-    context?.lineTo(x1, y1);
-    //context?.closePath();
-    context?.stroke();
-  }
+  getEquilateralTriangle = (matches: RegExpMatchArray) => {
+    const canvas: HTMLCanvasElement = this.myCanvas.nativeElement;
+    const sideLength: number = parseInt(matches[1], 10);
+    const data = { sideLength: sideLength }
+    this.shapeGeneratorService.sendEquilateralTriangle(data).subscribe(result => {
+      this.shapeDrawer.drawEquilateralTriangle(result, canvas);
+    }, error => console.error(error))
+  };
 
+  getRectangle = (matches: RegExpMatchArray) => {
+    const canvas: HTMLCanvasElement = this.myCanvas.nativeElement;
+    const length: number = parseInt(matches[1], 10);
+    const width: number = parseInt(matches[2], 10);
+    const data = { length: length, width: width };
+    this.shapeGeneratorService.sendRectangle(data).subscribe(result => {
+      this.shapeDrawer.drawRectangle(result, canvas);
+    }, error => console.error(error))
+  };
+
+  getSquare = (matches: RegExpMatchArray) => {
+    const canvas: HTMLCanvasElement = this.myCanvas.nativeElement;
+    const sideLength: number = parseInt(matches[1], 10);
+    const data = { sideLength: sideLength }
+    this.shapeGeneratorService.sendSquare(data).subscribe(result => {
+      this.shapeDrawer.drawSquare(result, canvas);
+    }, error => console.error(error))
+  };
+
+  getParallelogram = (matches: RegExpMatchArray) => {
+    const canvas: HTMLCanvasElement = this.myCanvas.nativeElement;
+    const height: number = parseInt(matches[1], 10);
+    const sideLength: number = parseInt(matches[2], 10);
+    const data = { height: height, sideLength: sideLength }
+    this.shapeGeneratorService.sendParallelogram(data).subscribe(result => {
+      this.shapeDrawer.drawParallelogram(result, canvas);
+    }, error => console.error(error))
+  };
+
+  getPentagon = (matches: RegExpMatchArray) => {
+    const canvas: HTMLCanvasElement = this.myCanvas.nativeElement;
+    const sideLength: number = parseInt(matches[1], 10);
+    const data = { sideLength: sideLength }
+    this.shapeGeneratorService.sendPentagon(data).subscribe(result => {
+      this.shapeDrawer.drawPentagon(result, canvas);
+    }, error => console.error(error));
+  };
+
+  getHexagon = (matches: RegExpMatchArray) => {
+    const canvas: HTMLCanvasElement = this.myCanvas.nativeElement;
+    const sideLength: number = parseInt(matches[1], 10);
+    const data = { sideLength: sideLength }
+    this.shapeGeneratorService.sendHexagon(data).subscribe(result => {
+      this.shapeDrawer.drawHexagon(result, canvas);
+    }, error => console.error(error));
+  };
+
+  getHeptagon = (matches: RegExpMatchArray) => {
+    const canvas: HTMLCanvasElement = this.myCanvas.nativeElement;
+    const sideLength: number = parseInt(matches[1], 10);
+    const data = { sideLength: sideLength }
+    this.shapeGeneratorService.sendHeptagon(data).subscribe(result => {
+      this.shapeDrawer.drawHeptagon(result, canvas);
+    }, error => console.error(error));
+  };
+
+  getOctagon = (matches: RegExpMatchArray) => {
+    const canvas: HTMLCanvasElement = this.myCanvas.nativeElement;
+    const sideLength: number = parseInt(matches[1], 10);
+    const data = { sideLength: sideLength }
+    this.shapeGeneratorService.sendOctagon(data).subscribe(result => {
+      this.shapeDrawer.drawOctagon(result, canvas);
+    }, error => console.error(error));
+  };
+
+  getCircle = (matches: RegExpMatchArray) => {
+    const canvas: HTMLCanvasElement = this.myCanvas.nativeElement;
+    const diameter: number = parseInt(matches[1], 10);
+    const data = { diameter: diameter }
+    this.shapeGeneratorService.sendCirlce(data).subscribe(result => {
+      this.shapeDrawer.drawCircle(result, canvas);
+    }, error => console.error(error));
+  };
 }

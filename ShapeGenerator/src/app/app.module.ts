@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { ShapeGeneratorService } from '../app/shape-generator/shape-generator.service';
+import { ShapeDrawer } from '../app/shape-generator/shape-drawer';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { ShapeGeneratorService } from '../app/shape-generator/shape-generator.se
     MatInputModule,
     MatButtonModule
   ],
-  providers: [ShapeGeneratorService],
+  providers: [ShapeGeneratorService, ShapeDrawer],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
