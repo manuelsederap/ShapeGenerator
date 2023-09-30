@@ -47,7 +47,12 @@ namespace ShapeGeneratorAPI.Controllers
             _circle = circle;
         }
 
-
+        /// <summary>
+        /// Retrieves the properties of an isosceles triangle based on provided side and base lengths.
+        /// </summary>
+        /// <param name="sideLength">The length of the equal sides of the triangle.</param>
+        /// <param name="baseLength">The length of the base of the triangle.</param>
+        /// <returns>An ActionResult containing the properties of the isosceles triangle.</returns>
         [HttpGet]
         public ActionResult<IsoscelesTriangleResult> GetIsoscelesTriangle(string sideLength, string baseLength)
         {
@@ -58,7 +63,7 @@ namespace ShapeGeneratorAPI.Controllers
             IsoscelesTriangleResult isoscelesTriangleResult = new()
             {
                 Name = "IsoscelesTriangle",
-                isValidResponse = true,
+                IsValidResponse = true,
                 Height = height,
                 BaseLength = sLength,
                 SideLength = bLength,
@@ -67,6 +72,13 @@ namespace ShapeGeneratorAPI.Controllers
             return isoscelesTriangleResult;
         }
 
+        /// <summary>
+        /// Retrieves the properties of a scalene triangle based on provided side lengths.
+        /// </summary>
+        /// <param name="aSide">The length of side A of the triangle.</param>
+        /// <param name="bSide">The length of side B of the triangle.</param>
+        /// <param name="cSide">The length of side C of the triangle.</param>
+        /// <returns>An ActionResult containing the properties of the scalene triangle.</returns>
         [HttpGet]
         public ActionResult<ScaleneTriangleResult> GetScaleneTriangle(string aSide, string bSide, string cSide)
         {
@@ -81,7 +93,7 @@ namespace ShapeGeneratorAPI.Controllers
             ScaleneTriangleResult scaleneTriangleResult = new()
             {
                 Name = "ScaleneTriangle",
-                isValidResponse = true,
+                IsValidResponse = true,
                 ASide = ASide,
                 BSide = BSide,
                 CSide = CSide,
@@ -93,6 +105,11 @@ namespace ShapeGeneratorAPI.Controllers
             return scaleneTriangleResult;
         }
 
+        /// <summary>
+        /// Retrieves the properties of an equilateral triangle based on the provided side length.
+        /// </summary>
+        /// <param name="sideLength">The length of the sides of the equilateral triangle.</param>
+        /// <returns>An ActionResult containing the properties of the equilateral triangle.</returns>
         [HttpGet]
         public ActionResult<EquilateralTriangleResult> GetEquilateralTriangle(string sideLength)
         {
@@ -103,7 +120,7 @@ namespace ShapeGeneratorAPI.Controllers
             EquilateralTriangleResult equilateralTriangleResult = new()
             {
                 Name = "EquilateralTriangle",
-                isValidResponse = true,
+                IsValidResponse = true,
                 Height = height,
                 SideLength = sLength
             };
@@ -111,6 +128,12 @@ namespace ShapeGeneratorAPI.Controllers
             return equilateralTriangleResult;
         }
 
+        /// <summary>
+        /// Retrieves the properties of a rectangle based on the provided length and width.
+        /// </summary>
+        /// <param name="length">The length of the rectangle.</param>
+        /// <param name="width">The width of the rectangle.</param>
+        /// <returns>An ActionResult containing the properties of the rectangle.</returns>
         [HttpGet]
         public ActionResult<ShapeResult> GetRectangle(string length, string width)
         {
@@ -122,7 +145,7 @@ namespace ShapeGeneratorAPI.Controllers
             ShapeResult rectangleResult = new()
             {
                 Name = "rectangle",
-                isValidResponse = true,
+                IsValidResponse = true,
                 Width = dWidth,
                 Length = dLength,
                 Area = area
@@ -131,6 +154,11 @@ namespace ShapeGeneratorAPI.Controllers
             return rectangleResult;
         }
 
+        /// <summary>
+        /// Retrieves the properties of a square based on the provided side length.
+        /// </summary>
+        /// <param name="sideLength">The length of the sides of the square.</param>
+        /// <returns>An ActionResult containing the properties of the square.</returns>
         [HttpGet]
         public ActionResult<SquareResult> GetSquare(string sideLength)
         {
@@ -141,7 +169,7 @@ namespace ShapeGeneratorAPI.Controllers
             SquareResult squareResult = new()
             {
                 Name = "square",
-                isValidResponse = true,
+                IsValidResponse = true,
                 SideLength = sLength,
                 Area = area
             };
@@ -149,6 +177,12 @@ namespace ShapeGeneratorAPI.Controllers
             return squareResult;
         }
 
+        /// <summary>
+        /// Retrieves the properties of a parallelogram based on the provided height and side length.
+        /// </summary>
+        /// <param name="height">The height of the parallelogram.</param>
+        /// <param name="sideLength">The length of one side of the parallelogram.</param>
+        /// <returns>An ActionResult containing the properties of the parallelogram.</returns>
         [HttpGet]
         public ActionResult<ParallelogramResult> GetParallelogram(string height, string sideLength)
         {
@@ -161,7 +195,7 @@ namespace ShapeGeneratorAPI.Controllers
             ParallelogramResult parallelogramResult = new()
             {
                 Name = "parallelogram",
-                isValidResponse = true,
+                IsValidResponse = true,
                 Height = dHeight,
                 SideLength= dSideLength,
                 Area= area,
@@ -171,6 +205,11 @@ namespace ShapeGeneratorAPI.Controllers
             return parallelogramResult;
         }
 
+        /// <summary>
+        /// Retrieves the properties of a pentagon based on the provided side length.
+        /// </summary>
+        /// <param name="sideLength">The length of the sides of the pentagon.</param>
+        /// <returns>An ActionResult containing the properties of the pentagon.</returns>
         [HttpGet]
         public ActionResult<PentagonResult> GetPentagon(string sideLength)
         {
@@ -183,7 +222,7 @@ namespace ShapeGeneratorAPI.Controllers
             PentagonResult pentagonResult = new()
             {
                 Name = "pentagon",
-                isValidResponse = true,
+                IsValidResponse = true,
                 SideLength = dSideLength,
                 Area= area, 
                 Radius = radius,
@@ -193,6 +232,11 @@ namespace ShapeGeneratorAPI.Controllers
             return pentagonResult;
         }
 
+        /// <summary>
+        /// Retrieves the properties of a hexagon based on the provided side length.
+        /// </summary>
+        /// <param name="sideLength">The length of the sides of the hexagon.</param>
+        /// <returns>An ActionResult containing the properties of the hexagon.</returns>
         [HttpGet]
         public ActionResult<HexagonResult> GetHexagon(string sideLength)
         {
@@ -205,7 +249,7 @@ namespace ShapeGeneratorAPI.Controllers
             HexagonResult hexagonResult = new()
             {
                 Name = "Hexagon",
-                isValidResponse = true,
+                IsValidResponse = true,
                 SideLength = dSideLength,
                 SumOfAllInternalAngles= sumOfAngles,
                 Area= area,
@@ -215,6 +259,11 @@ namespace ShapeGeneratorAPI.Controllers
             return hexagonResult;
         }
 
+        /// <summary>
+        /// Retrieves the properties of a heptagon based on the provided side length.
+        /// </summary>
+        /// <param name="sideLength">The length of the sides of the heptagon.</param>
+        /// <returns>An ActionResult containing the properties of the heptagon.</returns>
         [HttpGet]
         public ActionResult<HeptagonResult> GetHeptagon(string sideLength)
         {
@@ -226,7 +275,7 @@ namespace ShapeGeneratorAPI.Controllers
             HeptagonResult hexagonResult = new()
             {
                 Name = "Heptagon",
-                isValidResponse = true,
+                IsValidResponse = true,
                 SideLength = dSideLength,
                 Area= area,
                 Perimeter= perimeter
@@ -235,6 +284,11 @@ namespace ShapeGeneratorAPI.Controllers
             return hexagonResult;
         }
 
+        /// <summary>
+        /// Retrieves the properties of an octagon based on the provided side length.
+        /// </summary>
+        /// <param name="sideLength">The length of the sides of the octagon.</param>
+        /// <returns>An ActionResult containing the properties of the octagon.</returns>
         [HttpGet]
         public ActionResult<OctagonResult> GetOctagon(string sideLength)
         {
@@ -246,7 +300,7 @@ namespace ShapeGeneratorAPI.Controllers
             OctagonResult octagonResult = new()
             {
                 Name = "Octagon",
-                isValidResponse= true,
+                IsValidResponse= true,
                 SideLength = dSideLength,
                 Area = area,
                 Perimeter= perimeter
@@ -255,6 +309,11 @@ namespace ShapeGeneratorAPI.Controllers
             return octagonResult;
         }
 
+        /// <summary>
+        /// Retrieves the properties of a circle based on the provided diameter.
+        /// </summary>
+        /// <param name="diameter">The diameter of the circle.</param>
+        /// <returns>An ActionResult containing the properties of the circle.</returns>
         [HttpGet]
         public ActionResult<CircleResult> GetCircle(string diameter) 
         { 
@@ -267,7 +326,7 @@ namespace ShapeGeneratorAPI.Controllers
             CircleResult circleResult = new()
             {
                 Name = "Circle",
-                isValidResponse = true,
+                IsValidResponse = true,
                 Radius = radius,
                 Area = area,
                 Circumference = circumference

@@ -32,10 +32,12 @@ export abstract class ValidatorComponent {
           const sideLength: number = parseInt(matches[1], 10)
           const baseLength: number = parseInt(matches[2], 10);
 
+          // if value greater than 1000, form invalid will trigger
           if (sideLength > 1000 || baseLength > 1000) {
             return of({ invalidValue: true });
           }
 
+          // if baseLength > sideLength, form invalid will trigger
           if (baseLength > sideLength) {
             return of({ inputIsoscelesValue: true });
           }
@@ -51,6 +53,7 @@ export abstract class ValidatorComponent {
           const bSide: number = parseInt(matches[2], 10);
           const cSide: number = parseInt(matches[3], 10);
 
+          // if value greater than 1000, form invalid will trigger
           if (aSide > 1000 || bSide > 1000 || cSide > 1000) {
             return of({ invalidValue: true });
           }
@@ -72,6 +75,7 @@ export abstract class ValidatorComponent {
         const matches = this.getShapesData(inputValue);
         if (matches) {
           const sideLength: number = parseInt(matches[1], 10);
+          // if value greater than 1000, form invalid will trigger
           if (sideLength > 1000) {
             return of({ invalidValue: true });
           }

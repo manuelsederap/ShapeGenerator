@@ -13,7 +13,7 @@
           {{errorMessage}}
         </div>
         <br />
-        <div style="color: black;">
+        <div style="color: #404040;">
           List of Shapes available:
           [ isosceles triangle, scalene triangle, equilateral triangle, rectangle, square,
           parallelogram, pentagon, hexagon, heptagon, octagon, circle ]
@@ -34,12 +34,13 @@
   <br />
   <br />
   <br />
-  <!-- Generate Button -->
+  <!-- Generate Shape Button -->
   <button mat-flat-button color="primary" type="submit" [disabled]="!form.valid">
     Generate Shape
   </button>
 </form>
 <br />
+<!-- Clear Shape Button -->
 <button mat-flat-button color="warn" (click)="clearCanvas()">
   Clear Shape
 </button>

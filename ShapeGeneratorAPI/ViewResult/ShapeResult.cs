@@ -9,12 +9,12 @@
         /// <summary>
         /// status of response if valid or not
         /// </summary>
-        public bool isValidResponse { get; set; }
+        public bool IsValidResponse { get; set; }
 
         /// <summary>
         /// response message
         /// </summary>
-        public string? message { get; set; }
+        public string? Message { get; set; }
 
         /// <summary>
         /// return Area of a Shape

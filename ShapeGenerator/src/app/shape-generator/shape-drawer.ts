@@ -25,9 +25,12 @@ export class ShapeDrawer {
   drawIsoscelesTriangle(result: IsoscelesTriangle, canvas: HTMLCanvasElement) {
     const context = canvas.getContext('2d');
 
+    // shape color
+    if (context) {
+      this.addShapeColor(context);
+    }
+
     // Define triangle vertices
-    //const x1 = 500;
-    //const y1 = 500;
     const x1 = canvas.width / 2;
     const y1 = (canvas.height - result.height) / 2;
     const x2 = x1 - result.baseLength / 2;
@@ -41,12 +44,17 @@ export class ShapeDrawer {
     context?.lineTo(x2, y2);
     context?.lineTo(x3, y3);
     context?.lineTo(x1, y1);
-    context?.stroke();
+    context?.fill();
   }
 
   // Method to draw Scalene Triangle into canvas
   drawScaleneTriangle(result: ScaleneTriangle, canvas: HTMLCanvasElement) {
     const context = canvas.getContext('2d');
+
+    // shape color
+    if (context) {
+      this.addShapeColor(context);
+    }
 
     // Define coordinates of vertices
     const x1 = 500;
@@ -62,13 +70,17 @@ export class ShapeDrawer {
     context?.lineTo(x2, y2);
     context?.lineTo(x3, y3);
     context?.lineTo(x1, y1);
-    //context?.closePath();
-    context?.stroke();
+    context?.fill();
   }
 
   // Method to draw Equilateral Triangle into canvas
   drawEquilateralTriangle(result: EquilateralTriangle, canvas: HTMLCanvasElement) {
     const context = canvas.getContext('2d');
+
+    // shape color
+    if (context) {
+      this.addShapeColor(context);
+    }
 
     // Define coordinates of the vertices
     const x1 = canvas.width / 2;
@@ -84,25 +96,34 @@ export class ShapeDrawer {
     context?.lineTo(x2, y2);
     context?.lineTo(x3, y3);
     context?.lineTo(x1, y1);
-    context?.stroke();
+    context?.fill();
   }
 
   // Method to draw Rectangle into canvas
   drawRectangle(result: Rectangle, canvas: HTMLCanvasElement) {
     const context = canvas.getContext('2d');
 
+    // shape color
+    if (context) {
+      this.addShapeColor(context);
+    }
     // Calculate coordinates of the top-left corner
     const x = (canvas.width - result.length) / 2;
     const y = (canvas.height - result.width) / 2;
 
     context?.beginPath();
     context?.rect(x, y, result.length, result.width);
-    context?.stroke();
+    context?.fill();
   }
 
   // Method to draw square into canvas
   drawSquare(result: Square, canvas: HTMLCanvasElement) {
     const context = canvas.getContext('2d');
+
+    // shape color
+    if (context) {
+      this.addShapeColor(context);
+    }
 
     // Calculate coordinates of the top-left corner
     const x = (canvas.width - result.sideLength) / 2;
@@ -111,12 +132,17 @@ export class ShapeDrawer {
     // Draw the square using path and stroke
     context?.beginPath();
     context?.rect(x, y, result.sideLength, result.sideLength);
-    context?.stroke();
+    context?.fill();
   }
 
   // Method to draw parallelogram into canvas
   drawParallelogram(result: Parallelogram, canvas: HTMLCanvasElement) {
     const context = canvas.getContext('2d');
+
+    // shape color
+    if (context) {
+      this.addShapeColor(context);
+    }
 
     // Calculate coordinates of the vertices
     const x1 = (canvas.width - result.sideLength) / 2;
@@ -135,12 +161,17 @@ export class ShapeDrawer {
     context?.lineTo(x3, y3);
     context?.lineTo(x4, y4);
     context?.lineTo(x1, y1);
-    context?.stroke();
+    context?.fill();
   }
 
   // Method to draw pentagon into canvas
   drawPentagon(result: Pentagon, canvas: HTMLCanvasElement) {
     const context = canvas.getContext('2d');
+
+    // shape color
+    if (context) {
+      this.addShapeColor(context);
+    }
 
     // Calculate the coordinates of the vertices
     const centerX = canvas.width / 2;
@@ -156,12 +187,17 @@ export class ShapeDrawer {
     }
 
     context?.closePath();
-    context?.stroke();
+    context?.fill();
   }
 
   // Method to draw hexagon into canvas
   drawHexagon(result: Hexagon, canvas: HTMLCanvasElement) {
     const context = canvas.getContext('2d');
+
+    // shape color
+    if (context) {
+      this.addShapeColor(context);
+    }
 
     // Calculate the coordinates of the vertices
     const centerX = canvas.width / 2;
@@ -177,12 +213,17 @@ export class ShapeDrawer {
     }
 
     context?.closePath();
-    context?.stroke();
+    context?.fill();
   }
 
   // Method to draw heptagon into canvas
   drawHeptagon(result: Heptagon, canvas: HTMLCanvasElement) {
     const context = canvas.getContext('2d');
+
+    // shape color
+    if (context) {
+      this.addShapeColor(context);
+    }
 
     // Calculate the coordinates of the vertices
     const centerX = canvas.width / 2;
@@ -198,12 +239,17 @@ export class ShapeDrawer {
     }
 
     context?.closePath();
-    context?.stroke();
+    context?.fill();
   }
 
   // Method to draw octagon into canvas
   drawOctagon(result: Octagon, canvas: HTMLCanvasElement) {
     const context = canvas.getContext('2d');
+
+    // shape color
+    if (context) {
+      this.addShapeColor(context);
+    }
 
     // Calculate the coordinates of the vertices
     const centerX = canvas.width / 2;
@@ -219,12 +265,17 @@ export class ShapeDrawer {
     }
 
     context?.closePath();
-    context?.stroke();
+    context?.fill();
   }
 
   // Method to draw octagon into canvas
   drawCircle(result: Circle, canvas: HTMLCanvasElement) {
     const context = canvas.getContext('2d');
+
+    // shape color
+    if (context) {
+      this.addShapeColor(context);
+    }
 
     // Calculate the center coordinates
     const centerX = canvas.width / 2;
@@ -233,7 +284,17 @@ export class ShapeDrawer {
     // Draw the circle
     context?.beginPath();
     context?.arc(centerX, centerY, result.radius, 0, 2 * Math.PI);
-    context?.stroke();
+    context?.fill();
+  }
+
+  addShapeColor(context: CanvasRenderingContext2D) {
+    if (context) {
+      const radGrad = context.createLinearGradient(600, 600, 80, 600);
+      radGrad.addColorStop(0, '#00b300');
+      radGrad.addColorStop(0.9, '#1a8cff');
+      radGrad.addColorStop(1, '#0066cc');
+      context.fillStyle = radGrad;
+    }
   }
 
 }

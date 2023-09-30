@@ -2,6 +2,8 @@ mat-form-field {
   margin: 10px 0;
   width: 50%;
   text-align: center;
+  font-weight: 500;
+  color: #404040;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
@@ -17,7 +19,8 @@ mat-error {
 }
 
 h1 {
-    font-size: 40px;
-    font-weight: 600;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: #404040;
+  font-size: 40px;
+  font-weight: 600;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
