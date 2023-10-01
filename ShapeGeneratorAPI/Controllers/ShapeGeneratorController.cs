@@ -56,8 +56,16 @@ namespace ShapeGeneratorAPI.Controllers
         [HttpGet]
         public ActionResult<IsoscelesTriangleResult> GetIsoscelesTriangle(string sideLength, string baseLength)
         {
-            var sLength = Double.Parse(sideLength);
-            var bLength = Double.Parse(baseLength);
+            if (!Double.TryParse(sideLength, out var sLength) || !Double.TryParse(baseLength, out var bLength))
+            {
+                return BadRequest("Invalid input. Both sideLength and baseLength must be valid numbers.");
+            }
+
+            if (sLength < 0 || bLength < 0)
+            {
+                return BadRequest("Invalid input. Side length and base length must be positive numbers.");
+            }
+
             var height = _isoscelesTriangle.CalculateHeight(sLength, bLength);
 
             IsoscelesTriangleResult isoscelesTriangleResult = new()
@@ -82,9 +90,19 @@ namespace ShapeGeneratorAPI.Controllers
         [HttpGet]
         public ActionResult<ScaleneTriangleResult> GetScaleneTriangle(string aSide, string bSide, string cSide)
         {
-            var ASide = Double.Parse(aSide);
-            var BSide = Double.Parse(bSide);
-            var CSide = Double.Parse(cSide);
+            if (
+                !Double.TryParse(aSide, out var ASide) 
+                || !Double.TryParse(bSide, out var BSide) 
+                || !Double.TryParse(cSide, out var CSide)
+                )
+            {
+                return BadRequest("Invalid input. aSide, bSide, and cSide must be valid numbers.");
+            }
+
+            if (ASide < 0 || BSide < 0 || CSide < 0)
+            {
+                return BadRequest("Invalid input. aSide, bSide, and cSide must be positive numbers.");
+            }
 
             var aAngle = _scalenTriangle.CalculateAAngle(ASide, BSide, CSide);
             var bAngle = _scalenTriangle.CalculateBAngle(ASide, BSide, CSide);
@@ -113,7 +131,15 @@ namespace ShapeGeneratorAPI.Controllers
         [HttpGet]
         public ActionResult<EquilateralTriangleResult> GetEquilateralTriangle(string sideLength)
         {
-            var sLength = Double.Parse(sideLength);
+            if (!Double.TryParse(sideLength, out var sLength))
+            {
+                return BadRequest("Invalid input. sideLength must be valid numbers.");
+            }
+
+            if (sLength < 0)
+            {
+                return BadRequest("Invalid input. sideLength must be positive numbers.");
+            }
 
             var height = _equilateralTriangle.CalculateHeight(sLength);
 
@@ -137,8 +163,16 @@ namespace ShapeGeneratorAPI.Controllers
         [HttpGet]
         public ActionResult<ShapeResult> GetRectangle(string length, string width)
         {
-            var dLength = Double.Parse(length);
-            var dWidth = Double.Parse(width);
+
+            if (!Double.TryParse(length, out var dLength) || !Double.TryParse(width, out var dWidth))
+            {
+                return BadRequest("Invalid input. Both length and width must be valid numbers.");
+            }
+
+            if (dLength < 0 || dWidth < 0)
+            {
+                return BadRequest("Invalid input. length and width must be positive numbers.");
+            }
 
             var area = _rectangle.CalculateArea(dLength, dWidth);
 
@@ -162,7 +196,15 @@ namespace ShapeGeneratorAPI.Controllers
         [HttpGet]
         public ActionResult<SquareResult> GetSquare(string sideLength)
         {
-            var sLength = Double.Parse(sideLength);
+            if (!Double.TryParse(sideLength, out var sLength))
+            {
+                return BadRequest("Invalid input. sideLength must be valid numbers.");
+            }
+
+            if (sLength < 0)
+            {
+                return BadRequest("Invalid input. sideLength must be positive numbers.");
+            }
 
             var area = _square.CalculateArea(sLength, sLength);
 
@@ -186,8 +228,15 @@ namespace ShapeGeneratorAPI.Controllers
         [HttpGet]
         public ActionResult<ParallelogramResult> GetParallelogram(string height, string sideLength)
         {
-            var dHeight = Double.Parse(height);
-            var dSideLength = Double.Parse(sideLength);
+            if (!Double.TryParse(height, out var dHeight) || !Double.TryParse(sideLength, out var dSideLength))
+            {
+                return BadRequest("Invalid input. Both height and sideLength must be valid numbers.");
+            }
+
+            if (dHeight < 0 || dSideLength < 0)
+            {
+                return BadRequest("Invalid input. height and sideLength must be positive numbers.");
+            }
 
             var area = _square.CalculateArea(dHeight, dSideLength);
             var angle = _parallelogram.CalculateAngle(dHeight, dSideLength);
@@ -213,7 +262,15 @@ namespace ShapeGeneratorAPI.Controllers
         [HttpGet]
         public ActionResult<PentagonResult> GetPentagon(string sideLength)
         {
-            var dSideLength = Double.Parse(sideLength);
+            if (!Double.TryParse(sideLength, out var dSideLength))
+            {
+                return BadRequest("Invalid input. sideLength must be valid numbers.");
+            }
+
+            if (dSideLength < 0)
+            {
+                return BadRequest("Invalid input. sideLength must be positive numbers.");
+            }
 
             var radius = _pentagon.CalculateRadius(dSideLength);
             var area = _pentagon.CalculateArea(dSideLength);
@@ -240,7 +297,15 @@ namespace ShapeGeneratorAPI.Controllers
         [HttpGet]
         public ActionResult<HexagonResult> GetHexagon(string sideLength)
         {
-            var dSideLength = Double.Parse(sideLength);
+            if (!Double.TryParse(sideLength, out var dSideLength))
+            {
+                return BadRequest("Invalid input. sideLength must be valid numbers.");
+            }
+
+            if (dSideLength < 0)
+            {
+                return BadRequest("Invalid input. sideLength must be positive numbers.");
+            }
 
             var sumOfAngles = _hexagon.CalculateInternalAngles();
             var area = _hexagon.CalculateArea(dSideLength);
@@ -267,7 +332,15 @@ namespace ShapeGeneratorAPI.Controllers
         [HttpGet]
         public ActionResult<HeptagonResult> GetHeptagon(string sideLength)
         {
-            var dSideLength = Double.Parse(sideLength);
+            if (!Double.TryParse(sideLength, out var dSideLength))
+            {
+                return BadRequest("Invalid input. sideLength must be valid numbers.");
+            }
+
+            if (dSideLength < 0)
+            {
+                return BadRequest("Invalid input. sideLength must be positive numbers.");
+            }
 
             var area = _heptagon.CalculateArea(dSideLength);
             var perimeter = _heptagon.CalculatePerimeter(dSideLength);
@@ -292,7 +365,15 @@ namespace ShapeGeneratorAPI.Controllers
         [HttpGet]
         public ActionResult<OctagonResult> GetOctagon(string sideLength)
         {
-            var dSideLength = Double.Parse(sideLength);
+            if (!Double.TryParse(sideLength, out var dSideLength))
+            {
+                return BadRequest("Invalid input. sideLength must be valid numbers.");
+            }
+
+            if (dSideLength < 0)
+            {
+                return BadRequest("Invalid input. sideLength must be positive numbers.");
+            }
 
             var area = _octagon.CalculateArea(dSideLength);
             var perimeter = _octagon.CalculatePerimeter(dSideLength);
@@ -316,8 +397,16 @@ namespace ShapeGeneratorAPI.Controllers
         /// <returns>An ActionResult containing the properties of the circle.</returns>
         [HttpGet]
         public ActionResult<CircleResult> GetCircle(string diameter) 
-        { 
-            var dDiameter = Double.Parse(diameter);
+        {
+            if (!Double.TryParse(diameter, out var dDiameter))
+            {
+                return BadRequest("Invalid input. diameter must be valid numbers.");
+            }
+
+            if (dDiameter < 0)
+            {
+                return BadRequest("Invalid input. diameter must be positive numbers.");
+            }
 
             var radius = _circle.CalculateRadius(dDiameter);
             var area = _circle.CalculateArea(radius);
