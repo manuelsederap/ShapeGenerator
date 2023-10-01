@@ -50,6 +50,24 @@ Open project terminal/cmd, then run:
 
 Make sure to run the ShapeGeneratorAPI Backend server first, before you run the ShapeGenerator front end server
 
+to run the ShapeGeneratorAPI Backend server:
+
+1. Open project terminal/cmd, then run:
+
+2. ### `cd ShapeGeneratorAPI`
+
+3. ### `dotnet run`
+
+After that, when ShapeGeneratorAPI successfully run, you can now run the frontend server
+
+to run the ShapeGenerator frontend server:
+
+1. Open project terminal/cmd, then run:
+
+2. ### `cd ShapeGenerator`
+
+3. ### `ng serve`
+
 OR, follow these steps:
 
 1. Open the project in Visual Studio and right click the ShapeGenerator Solution and select Set Startup Projects.
