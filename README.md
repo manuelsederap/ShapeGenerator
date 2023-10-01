@@ -1,6 +1,6 @@
 # ShapeGenerator
 
-Add Video of Unit test:
+Added Video to test the app functionality:
 https://www.loom.com/share/21c8df21f8b34bd281653c740c5636ae
 
 This Project is built on .Net Core 6.0, NodeJS v16.17.1, Angular v13
