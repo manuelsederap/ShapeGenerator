@@ -1,6 +1,8 @@
-﻿namespace ShapeGeneratorAPI.Shapes
+﻿using ShapeGeneratorAPI.Interface;
+
+namespace ShapeGeneratorAPI.Shapes
 {
-    public class IsoscelesTriangle : Shape
+    public class IsoscelesTriangle : Shape, IIsoscelesTriangle
     {
         /// <summary>
         /// Length of both of sides of IsoscelesTriangle

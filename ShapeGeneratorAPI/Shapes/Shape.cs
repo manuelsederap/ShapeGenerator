@@ -1,6 +1,8 @@
-﻿namespace ShapeGeneratorAPI.Shapes
+﻿using ShapeGeneratorAPI.Interface;
+
+namespace ShapeGeneratorAPI.Shapes
 {
-    public class Shape
+    public class Shape : IShape
     {
         /// <summary>
         ///  Area of Shape

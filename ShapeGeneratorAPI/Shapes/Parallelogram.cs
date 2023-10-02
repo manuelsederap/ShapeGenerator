@@ -1,6 +1,8 @@
-﻿namespace ShapeGeneratorAPI.Shapes
+﻿using ShapeGeneratorAPI.Interface;
+
+namespace ShapeGeneratorAPI.Shapes
 {
-    public class Parallelogram : Shape
+    public class Parallelogram : Shape, IParallelogram
     {
         /// <summary>
         /// Angle each sides of Parallelogram shape

@@ -8,50 +8,51 @@ using ShapeGeneratorAPI.Shapes;
 using Moq;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
+using ShapeGeneratorAPI.Interface;
 
 namespace ShapeGeneratorAPI.Tests
 {
     public class ShapeGeneratorController_Test
     {
         private readonly ShapeGeneratorController _controller;
-        private readonly Mock<IsoscelesTriangle> _mockIsoscelesTriangle;
-        private readonly Mock<ScaleneTriangle> _mockScaleneTriangle;
-        private readonly Mock<EquilateralTriangle> _mockEquilateralTriangle;
-        private readonly Mock<Rectangle> _mockRectangle;
-        private readonly Mock<Square> _mockSquare;
-        private readonly Mock<Parallelogram> _mockParallelogram;
-        private readonly Mock<Pentagon> _mockPentagon;
-        private readonly Mock<Hexagon> _mockHexagon;
-        private readonly Mock<Heptagon> _mockHeptagon;
-        private readonly Mock<Octagon> _mockOctagon;
-        private readonly Mock<Circle> _mockCircle;
+        private readonly Mock<IIsoscelesTriangle> _mockIIsoscelesTriangle;
+        private readonly Mock<IScaleneTriangle> _mockIScaleneTriangle;
+        private readonly Mock<IEquilateralTriangle> _mockIEquilateralTriangle;
+        private readonly Mock<IRectangle> _mockIRectangle;
+        private readonly Mock<ISquare> _mockISquare;
+        private readonly Mock<IParallelogram> _mockIParallelogram;
+        private readonly Mock<IPentagon> _mockIPentagon;
+        private readonly Mock<IHexagon> _mockIHexagon;
+        private readonly Mock<IHeptagon> _mockIHeptagon;
+        private readonly Mock<IOctagon> _mockIOctagon;
+        private readonly Mock<ICircle> _mockICircle;
 
         public ShapeGeneratorController_Test()
         {
-            _mockIsoscelesTriangle = new Mock<IsoscelesTriangle>();
-            _mockScaleneTriangle = new Mock<ScaleneTriangle>();
-            _mockEquilateralTriangle = new Mock<EquilateralTriangle>();
-            _mockRectangle = new Mock<Rectangle>();
-            _mockSquare = new Mock<Square>();
-            _mockParallelogram = new Mock<Parallelogram>();
-            _mockPentagon = new Mock<Pentagon>();
-            _mockHexagon = new Mock<Hexagon>();
-            _mockHeptagon = new Mock<Heptagon>();
-            _mockOctagon = new Mock<Octagon>();
-            _mockCircle = new Mock<Circle>();
+            _mockIIsoscelesTriangle = new Mock<IIsoscelesTriangle>();
+            _mockIScaleneTriangle = new Mock<IScaleneTriangle>();
+            _mockIEquilateralTriangle = new Mock<IEquilateralTriangle>();
+            _mockIRectangle = new Mock<IRectangle>();
+            _mockISquare = new Mock<ISquare>();
+            _mockIParallelogram = new Mock<IParallelogram>();
+            _mockIPentagon = new Mock<IPentagon>();
+            _mockIHexagon = new Mock<IHexagon>();
+            _mockIHeptagon = new Mock<IHeptagon>();
+            _mockIOctagon = new Mock<IOctagon>();
+            _mockICircle = new Mock<ICircle>();
 
             _controller = new ShapeGeneratorController(
-                _mockIsoscelesTriangle.Object,
-                _mockScaleneTriangle.Object,
-                _mockEquilateralTriangle.Object,
-                _mockRectangle.Object,
-                _mockSquare.Object,
-                _mockParallelogram.Object,
-                _mockPentagon.Object,
-                _mockHexagon.Object,
-                _mockHeptagon.Object,
-                _mockOctagon.Object,
-                _mockCircle.Object
+                _mockIIsoscelesTriangle.Object,
+                _mockIScaleneTriangle.Object,
+                _mockIEquilateralTriangle.Object,
+                _mockIRectangle.Object,
+                _mockISquare.Object,
+                _mockIParallelogram.Object,
+                _mockIPentagon.Object,
+                _mockIHexagon.Object,
+                _mockIHeptagon.Object,
+                _mockIOctagon.Object,
+                _mockICircle.Object
                 );
         }
         /// <summary>
@@ -61,9 +62,13 @@ namespace ShapeGeneratorAPI.Tests
         public void GetIsoscelesTriangle()
         {
             // Arrange
-            double expectedHeight = 8;
-            
+            double sideLength = 10.0;
+            double baseLength = 12.0;
+            double expectedHeight = Math.Sqrt(Math.Pow(sideLength, 2) - Math.Pow(baseLength / 2, 2));
+
             // Act
+            _mockIIsoscelesTriangle.Setup(x => x.CalculateHeight(sideLength, baseLength)).Returns(expectedHeight);
+
             var response = _controller.GetIsoscelesTriangle("10", "12").Value;
 
             // Assert
@@ -102,6 +107,28 @@ namespace ShapeGeneratorAPI.Tests
 
             // Assert
             Assert.IsType<BadRequestObjectResult>(response.Result);
+        }
+
+        [Fact]
+        public void GetIsoscelesTriangle_exceed1000SideLength_ReturnsBadRequest()
+        {
+            // Arrange - Side length is 1001
+            // Act
+            var response = _controller.GetIsoscelesTriangle("1001", "12");
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(response.Result);
+        }
+
+        [Fact]
+        public void GetIsoscelesTriangle_exceed1000BaseLength_ReturnsBadRequest()
+        {
+            // Arrange - Base length is 1200
+            // Act
+            var response = _controller.GetIsoscelesTriangle("10", "1200");
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(response.Result);
 
         }
 
@@ -113,17 +140,24 @@ namespace ShapeGeneratorAPI.Tests
         public void GetScaleneTriangle()
         {
             // Arrange
-            double expectedAAngle = 0.45;
-            double expectedBAngle = 1.21;
-            double expectedCAngle = 1.47;
+            double aSide = 15.0;
+            double bSide = 32.0;
+            double cSide = 34.0;
+            double expectedAAngle = Math.Acos((bSide * bSide + cSide * cSide - aSide * aSide) / (2 * bSide * cSide));
+            double expectedBAngle = Math.Acos((cSide * cSide + aSide * aSide - bSide * bSide) / (2 * cSide * aSide));
+            double expectedCAngle = Math.PI - expectedAAngle - expectedBAngle;
 
             // Act
+            _mockIScaleneTriangle.Setup(x => x.CalculateAAngle(aSide, bSide, cSide)).Returns(expectedAAngle);
+            _mockIScaleneTriangle.Setup(x => x.CalculateBAngle(aSide, bSide, cSide)).Returns(expectedBAngle);
+            _mockIScaleneTriangle.Setup(x => x.CalculateCAngle(expectedAAngle, expectedBAngle)).Returns(expectedCAngle);
+
             var response = _controller.GetScaleneTriangle("15", "32", "34").Value;
 
             // Assert
-            Assert.Equal(expectedAAngle, Math.Round((double)(response?.AAngle), 2));
-            Assert.Equal(expectedBAngle, Math.Round((double)(response?.BAngle), 2));
-            Assert.Equal(expectedCAngle, Math.Round((double)(response?.CAngle), 2));
+            Assert.Equal(expectedAAngle, response?.AAngle);
+            Assert.Equal(expectedBAngle, response?.BAngle);
+            Assert.Equal(expectedCAngle, response?.CAngle);
         }
 
         [Fact]
@@ -192,6 +226,39 @@ namespace ShapeGeneratorAPI.Tests
             Assert.IsType<BadRequestObjectResult>(response.Result);
         }
 
+        [Fact]
+        public void GetScaleneTriangle_Exceed1000ASide_ReturnsBadRequest()
+        {
+            // Arrange - ASide is 1500
+            // Act
+            var response = _controller.GetScaleneTriangle("1500", "4", "5");
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(response.Result);
+        }
+
+        [Fact]
+        public void GetScaleneTriangle_Exceed1000BSide_ReturnsBadRequest()
+        {
+            // Arrange - BSide is 4000
+            // Act
+            var response = _controller.GetScaleneTriangle("3", "4000", "5");
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(response.Result);
+        }
+
+        [Fact]
+        public void GetScaleneTriangle_Exceed1000CSide_ReturnsBadRequest()
+        {
+            // Arrange - CSide is 5000
+            // Act
+            var response = _controller.GetScaleneTriangle("3", "4", "5000");
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(response.Result);
+        }
+
         /// <summary>
         /// Test the GetEquilateralTriangle method
         /// </summary>
@@ -200,13 +267,14 @@ namespace ShapeGeneratorAPI.Tests
         public void GetEquilateralTriangle()
         {
             /// Act
-            double expectedHeight = 173.21;
+            double expectedHeight = (Math.Sqrt(3) / 2) * 200;
 
             /// Arrange
+            _mockIEquilateralTriangle.Setup(x => x.CalculateHeight(200)).Returns(expectedHeight);
             var response = _controller.GetEquilateralTriangle("200").Value;
 
             /// Assert
-            Assert.Equal(expectedHeight, Math.Round((double)(response?.Height), 2));
+            Assert.Equal(expectedHeight, response?.Height);
         }
 
         [Fact]
@@ -231,6 +299,17 @@ namespace ShapeGeneratorAPI.Tests
             Assert.IsType<BadRequestObjectResult>(response.Result);
         }
 
+        [Fact]
+        public void GetEquilateralTriangle_Exceed1000SideLength_ReturnsBadRequest()
+        {
+            // Arrange - Side length is 5000
+            // Act
+            var response = _controller.GetEquilateralTriangle("5000");
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(response.Result);
+        }
+
         /// <summary>
         /// Test the GetRectangle method
         /// </summary>
@@ -238,9 +317,10 @@ namespace ShapeGeneratorAPI.Tests
         public void GetRectangle()
         {
             // Act Area = L x W;
-            double expectedArea = 180000;
+            double expectedArea = 600 * 300;
 
             // Arrange
+            _mockIRectangle.Setup(x => x.CalculateArea(600, 300)).Returns(expectedArea);
             var response = _controller.GetRectangle("600", "300").Value;
 
             // Assert
@@ -291,6 +371,28 @@ namespace ShapeGeneratorAPI.Tests
             Assert.IsType<BadRequestObjectResult>(response.Result);
         }
 
+        [Fact]
+        public void GetRectangle_Exceed1000Width_ReturnsBadRequest()
+        {
+            // Arrange - Width is 7000
+            // Act
+            var response = _controller.GetRectangle("5", "7000");
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(response.Result);
+        }
+
+        [Fact]
+        public void GetRectangle_Exceed1000Length_ReturnsBadRequest()
+        {
+            // Arrange - Length is 5000
+            // Act
+            var response = _controller.GetRectangle("5000", "7");
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(response.Result);
+        }
+
         /// <summary>
         /// Test the GetSquare method
         /// </summary>
@@ -298,9 +400,10 @@ namespace ShapeGeneratorAPI.Tests
         public void GetSquare()
         {
             // Act Area = L x W;
-            double expectedArea = 40000;
+            double expectedArea = 200 * 200;
 
             // Arrange
+            _mockISquare.Setup(x => x.CalculateArea(200, 200)).Returns(expectedArea);
             var response = _controller.GetSquare("200").Value;
 
             // Assert
@@ -329,6 +432,17 @@ namespace ShapeGeneratorAPI.Tests
             Assert.IsType<BadRequestObjectResult>(response.Result);
         }
 
+        [Fact]
+        public void GetSquare_Exceed1000SideLength_ReturnsBadRequest()
+        {
+            // Arrange - Side length is 5000
+            // Act
+            var response = _controller.GetSquare("5000");
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(response.Result);
+        }
+
         /// <summary>
         /// Test the GetParallelogram() method
         /// </summary>
@@ -336,15 +450,20 @@ namespace ShapeGeneratorAPI.Tests
         public void GetParallelogram()
         {
             // Act
-            double expectedAngle = 30.00;
+            double height = 300.0;
+            double sideLength = 600.0;
+            double radians = Math.Asin(height / sideLength);
+            double expectedAngle = radians * 180 / Math.PI;
             double expectedArea = 180000;
 
             // Arrange
+            _mockIParallelogram.Setup(x => x.CalculateAngle(height, sideLength)).Returns(expectedAngle);
+            _mockIParallelogram.Setup(x => x.CalculateArea(height, sideLength)).Returns(expectedArea);
             var response = _controller.GetParallelogram("300", "600").Value;
 
             // Assert
             Assert.Equal(expectedArea, response?.Area);
-            Assert.Equal(expectedAngle, Math.Round((double)(response?.Angle), 2));
+            Assert.Equal(expectedAngle, response?.Angle);
         }
 
         [Fact]
@@ -391,6 +510,28 @@ namespace ShapeGeneratorAPI.Tests
             Assert.IsType<BadRequestObjectResult>(response.Result);
         }
 
+        [Fact]
+        public void GetParallelogram_Exceed1000Height_ReturnsBadRequest()
+        {
+            // Arrange - Height is 5000
+            // Act
+            var response = _controller.GetParallelogram("5000", "7");
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(response.Result);
+        }
+
+        [Fact]
+        public void GetParallelogram_Exceed1000SideLength_ReturnsBadRequest()
+        {
+            // Arrange - Side length is 7000
+            // Act
+            var response = _controller.GetParallelogram("5", "7000");
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(response.Result);
+        }
+
         /// <summary>
         /// Test the GetPentagon() method
         /// </summary>
@@ -398,17 +539,22 @@ namespace ShapeGeneratorAPI.Tests
         public void GetPentagon()
         {
             //Act
-            double expectedRadius = 255.19999999999999;
-            double expectedArea = 154842.97;
-            double expectedPerimeter = 1500;
+            double sideLength = 300.0;
+            double expectedRadius = sideLength / (2 * Math.Sin(Math.PI / 5));
+            double expectedArea = (5 * Math.Pow(sideLength, 2)) / (4 * Math.Tan(Math.PI / 5));
+            double expectedPerimeter = 5 * sideLength;
 
             //Arrange
+            _mockIPentagon.Setup(x => x.CalculateRadius(sideLength)).Returns(expectedRadius);
+            _mockIPentagon.Setup(x => x.CalculateArea(sideLength)).Returns(expectedArea);
+            _mockIPentagon.Setup(x => x.CalculatePerimeter(sideLength)).Returns(expectedPerimeter);
+
             var response = _controller.GetPentagon("300").Value;
 
             //Assert
             Assert.Equal(expectedPerimeter, response?.Perimeter);
-            Assert.Equal(expectedRadius, Math.Round((double)(response?.Radius), 2));
-            Assert.Equal(expectedArea, Math.Round((double)(response?.Area), 2));
+            Assert.Equal(expectedRadius, response?.Radius);
+            Assert.Equal(expectedArea, response?.Area);
         }
 
         [Fact]
@@ -433,6 +579,17 @@ namespace ShapeGeneratorAPI.Tests
             Assert.IsType<BadRequestObjectResult>(response.Result);
         }
 
+        [Fact]
+        public void GetPentagon_Exceed1000SideLength_ReturnsBadRequest()
+        {
+            // Arrange - Side length is 5000
+            // Act
+            var response = _controller.GetPentagon("5000");
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(response.Result);
+        }
+
         /// <summary>
         /// Test the GetHexagon() Method
         /// </summary>
@@ -440,16 +597,21 @@ namespace ShapeGeneratorAPI.Tests
         public void GetHexagon()
         {
             //Act
-            double expectedSumAngles = 720;
-            double expectedPerimeter = 1800;
-            double expectedArea = 233826.85999999999;
+            double sideLength = 300.0;
+            double expectedSumAngles = (6 - 2) * 180;
+            double expectedPerimeter = 6 * sideLength;
+            double expectedArea = (3 * Math.Sqrt(3) / 2) * Math.Pow(sideLength, 2);
 
             //Arrange
+            _mockIHexagon.Setup(x => x.CalculateInternalAngles()).Returns(expectedSumAngles);
+            _mockIHexagon.Setup(x => x.CalculatePerimeter(sideLength)).Returns(expectedPerimeter);
+            _mockIHexagon.Setup(x => x.CalculateArea(sideLength)).Returns(expectedArea);
+
             var response = _controller.GetHexagon("300").Value;
 
             //Assert
             Assert.Equal(expectedSumAngles, response?.SumOfAllInternalAngles);
-            Assert.Equal(expectedArea, Math.Round((double)(response?.Area), 2));
+            Assert.Equal(expectedArea, response?.Area);
             Assert.Equal(expectedPerimeter, response?.Perimeter);
         }
 
@@ -475,6 +637,17 @@ namespace ShapeGeneratorAPI.Tests
             Assert.IsType<BadRequestObjectResult>(response.Result);
         }
 
+        [Fact]
+        public void GetHexagon_Exceed1000SideLength_ReturnsBadRequest()
+        {
+            // Arrange - Side length is 5000
+            // Act
+            var response = _controller.GetHexagon("5000");
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(response.Result);
+        }
+
         /// <summary>
         /// Test the GetHeptagon() Method
         /// </summary>
@@ -482,10 +655,14 @@ namespace ShapeGeneratorAPI.Tests
         public void GetHeptagon()
         {
             // Act
-            double expectedPerimeter = 3500;
-            double expectedArea = 908478.11100039736;
+            double sideLength = 500.0;
+            double expectedPerimeter = 7 * sideLength;
+            double expectedArea = (7 / 4.0) * Math.Pow(sideLength, 2) * (1 / Math.Tan(Math.PI / 7));
 
             // Arrange
+            _mockIHeptagon.Setup(x => x.CalculatePerimeter(sideLength)).Returns(expectedPerimeter);
+            _mockIHeptagon.Setup(x => x.CalculateArea(sideLength)).Returns(expectedArea);
+
             var response = _controller.GetHeptagon("500").Value;
 
             // Assert
@@ -515,6 +692,17 @@ namespace ShapeGeneratorAPI.Tests
             Assert.IsType<BadRequestObjectResult>(response.Result);
         }
 
+        [Fact]
+        public void GetHeptagon_Exceed1000SideLength_ReturnsBadRequest()
+        {
+            // Arrange - Side length is 5000
+            // Act
+            var response = _controller.GetHeptagon("5000");
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(response.Result);
+        }
+
         /// <summary>
         /// Test the GetOctagon() Method
         /// </summary>
@@ -522,10 +710,14 @@ namespace ShapeGeneratorAPI.Tests
         public void GetOctagon()
         {
             // Act
-            double expectedPerimeter = 4000;
-            double expectedArea = 1207106.7811865474;
+            double sideLength = 500.0;
+            double expectedPerimeter = 8 * sideLength;
+            double expectedArea = 2 * (1 + Math.Sqrt(2)) * Math.Pow(sideLength, 2);
 
             // Arrange
+            _mockIOctagon.Setup(x => x.CalculatePerimeter(sideLength)).Returns(expectedPerimeter);
+            _mockIOctagon.Setup(x => x.CalculateArea(sideLength)).Returns(expectedArea);
+
             var response = _controller.GetOctagon("500").Value;
 
             // Assert
@@ -555,6 +747,17 @@ namespace ShapeGeneratorAPI.Tests
             Assert.IsType<BadRequestObjectResult>(response.Result);
         }
 
+        [Fact]
+        public void GetOctagon_Exceed1000SideLength_ReturnsBadRequest()
+        {
+            // Arrange - Side length is 5000
+            // Act
+            var response = _controller.GetOctagon("5000");
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(response.Result);
+        }
+
         /// <summary>
         /// Test the GetCircle() Method
         /// </summary>
@@ -562,11 +765,15 @@ namespace ShapeGeneratorAPI.Tests
         public void GetCircle()
         {
             // Act
-            double expectedRadius = 150;
-            double expectedArea = 70685.83470577035;
-            double expectedCircumference = 942.47779607693792;
+            double expectedDiameter = 300.0;
+            double expectedRadius = expectedDiameter / 2;
+            double expectedArea = Math.PI * Math.Pow(expectedRadius, 2);
+            double expectedCircumference = Math.PI * expectedDiameter;
 
             // Arrange
+            _mockICircle.Setup(x => x.CalculateRadius(expectedDiameter)).Returns(expectedRadius);
+            _mockICircle.Setup(x => x.CalculateArea(expectedRadius)).Returns(expectedArea);
+            _mockICircle.Setup(x => x.CalculateCircumference(expectedDiameter)).Returns(expectedCircumference);
             var response = _controller.GetCircle("300").Value;
 
             // Assert
@@ -592,6 +799,17 @@ namespace ShapeGeneratorAPI.Tests
             // Arrange - Diameter is negative
             // Act
             var response = _controller.GetCircle("-10");
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(response.Result);
+        }
+
+        [Fact]
+        public void GetCircle_Exceed1000Diameter_ReturnsBadRequest()
+        {
+            // Arrange - Diameter is 10000
+            // Act
+            var response = _controller.GetCircle("10000");
 
             // Assert
             Assert.IsType<BadRequestObjectResult>(response.Result);

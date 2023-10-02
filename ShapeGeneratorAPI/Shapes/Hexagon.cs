@@ -1,6 +1,8 @@
-﻿namespace ShapeGeneratorAPI.Shapes
+﻿using ShapeGeneratorAPI.Interface;
+
+namespace ShapeGeneratorAPI.Shapes
 {
-    public class Hexagon : Shape
+    public class Hexagon : Shape, IHexagon
     {
         /// <summary>
         /// Lenght of sides of hexagon shape

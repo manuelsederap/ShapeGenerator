@@ -1,6 +1,8 @@
-﻿namespace ShapeGeneratorAPI.Shapes
+﻿using ShapeGeneratorAPI.Interface;
+
+namespace ShapeGeneratorAPI.Shapes
 {
-    public class EquilateralTriangle : Shape
+    public class EquilateralTriangle : Shape, IEquilateralTriangle
     {
         /// <summary>
         /// Length of side of Equilateral Triangle

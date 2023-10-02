@@ -1,6 +1,8 @@
-﻿namespace ShapeGeneratorAPI.Shapes
+﻿using ShapeGeneratorAPI.Interface;
+
+namespace ShapeGeneratorAPI.Shapes
 {
-    public class ScaleneTriangle
+    public class ScaleneTriangle : Shape, IScaleneTriangle
     {
         /// <summary>
         /// A Side of Scalene Triangle

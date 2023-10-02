@@ -1,6 +1,8 @@
-﻿namespace ShapeGeneratorAPI.Shapes
+﻿using ShapeGeneratorAPI.Interface;
+
+namespace ShapeGeneratorAPI.Shapes
 {
-    public class Circle : Shape
+    public class Circle : Shape, ICircle
     {
         /// <summary>
         /// Diameter of a circle

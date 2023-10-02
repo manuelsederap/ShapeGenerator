@@ -1,6 +1,8 @@
-﻿namespace ShapeGeneratorAPI.Shapes
+﻿using ShapeGeneratorAPI.Interface;
+
+namespace ShapeGeneratorAPI.Shapes
 {
-    public class Pentagon : Shape
+    public class Pentagon : Shape, IPentagon
     {
         /// <summary>
         /// Length of sides of pentagon shape

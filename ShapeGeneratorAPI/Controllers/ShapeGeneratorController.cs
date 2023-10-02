@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ShapeGeneratorAPI.Interface;
 using ShapeGeneratorAPI.Shapes;
 using ShapeGeneratorAPI.ViewResult;
 
@@ -9,42 +10,42 @@ namespace ShapeGeneratorAPI.Controllers
     [ApiController]
     public class ShapeGeneratorController : ControllerBase
     {
-        private readonly IsoscelesTriangle _isoscelesTriangle;
-        private readonly ScaleneTriangle _scalenTriangle;
-        private readonly EquilateralTriangle _equilateralTriangle;
-        private readonly Rectangle _rectangle;
-        private readonly Square _square;
-        private readonly Parallelogram _parallelogram;
-        private readonly Pentagon _pentagon;
-        private readonly Hexagon _hexagon;
-        private readonly Heptagon _heptagon;
-        private readonly Octagon _octagon;
-        private readonly Circle _circle;
+        private readonly IIsoscelesTriangle _iIsoscelesTriangle;
+        private readonly IScaleneTriangle _iScalenTriangle;
+        private readonly IEquilateralTriangle _iEquilateralTriangle;
+        private readonly IRectangle _iRectangle;
+        private readonly ISquare _iSquare;
+        private readonly IParallelogram _iParallelogram;
+        private readonly IPentagon _iPentagon;
+        private readonly IHexagon _iHexagon;
+        private readonly IHeptagon _iHeptagon;
+        private readonly IOctagon _iOctagon;
+        private readonly ICircle _iCircle;
 
         public ShapeGeneratorController(
-            IsoscelesTriangle isoscelesTriangle,
-            ScaleneTriangle scaleneTriangle,
-            EquilateralTriangle equilateralTriangle,
-            Rectangle rectangle,
-            Square square,
-            Parallelogram parallelogram,
-            Pentagon pentagon,
-            Hexagon hexagon,
-            Heptagon heptagon,
-            Octagon octagon,
-            Circle circle)
+            IIsoscelesTriangle iIsoscelesTriangle,
+            IScaleneTriangle iScaleneTriangle,
+            IEquilateralTriangle iEquilateralTriangle,
+            IRectangle iRectangle,
+            ISquare iSquare,
+            IParallelogram iParallelogram,
+            IPentagon iPentagon,
+            IHexagon iHexagon,
+            IHeptagon IHeptagon,
+            IOctagon IOctagon,
+            ICircle iCirle)
         {
-            _isoscelesTriangle = isoscelesTriangle;
-            _scalenTriangle = scaleneTriangle;
-            _equilateralTriangle = equilateralTriangle;
-            _rectangle = rectangle;
-            _square = square;
-            _parallelogram = parallelogram;
-            _pentagon = pentagon;
-            _hexagon = hexagon;
-            _heptagon = heptagon;
-            _octagon = octagon;
-            _circle = circle;
+            _iIsoscelesTriangle = iIsoscelesTriangle;
+            _iScalenTriangle = iScaleneTriangle;
+            _iEquilateralTriangle = iEquilateralTriangle;
+            _iRectangle = iRectangle;
+            _iSquare = iSquare;
+            _iParallelogram = iParallelogram;
+            _iPentagon = iPentagon;
+            _iHexagon = iHexagon;
+            _iHeptagon = IHeptagon;
+            _iOctagon = IOctagon;
+            _iCircle = iCirle;
         }
 
         /// <summary>
@@ -66,7 +67,12 @@ namespace ShapeGeneratorAPI.Controllers
                 return BadRequest("Invalid input. Side length and base length must be positive numbers.");
             }
 
-            var height = _isoscelesTriangle.CalculateHeight(sLength, bLength);
+            if (sLength > 1000 || bLength > 1000)
+            {
+                return BadRequest("Invalid input. Side length and base length must not exceed to 1000.");
+            }
+
+            var height = _iIsoscelesTriangle.CalculateHeight(sLength, bLength);
 
             IsoscelesTriangleResult isoscelesTriangleResult = new()
             {
@@ -104,9 +110,14 @@ namespace ShapeGeneratorAPI.Controllers
                 return BadRequest("Invalid input. aSide, bSide, and cSide must be positive numbers.");
             }
 
-            var aAngle = _scalenTriangle.CalculateAAngle(ASide, BSide, CSide);
-            var bAngle = _scalenTriangle.CalculateBAngle(ASide, BSide, CSide);
-            var cAngle = _scalenTriangle.CalculateCAngle(aAngle, bAngle);
+            if (ASide > 1000 || BSide > 1000 || CSide > 1000)
+            {
+                return BadRequest("Invalid input. aSide, bSide, and cSide must not exceed to 1000.");
+            }
+
+            var aAngle = _iScalenTriangle.CalculateAAngle(ASide, BSide, CSide);
+            var bAngle = _iScalenTriangle.CalculateBAngle(ASide, BSide, CSide);
+            var cAngle = _iScalenTriangle.CalculateCAngle(aAngle, bAngle);
 
             ScaleneTriangleResult scaleneTriangleResult = new()
             {
@@ -141,7 +152,12 @@ namespace ShapeGeneratorAPI.Controllers
                 return BadRequest("Invalid input. sideLength must be positive numbers.");
             }
 
-            var height = _equilateralTriangle.CalculateHeight(sLength);
+            if (sLength > 1000)
+            {
+                return BadRequest("Invalid input. sideLength must not exceed to 1000.");
+            }
+
+            var height = _iEquilateralTriangle.CalculateHeight(sLength);
 
             EquilateralTriangleResult equilateralTriangleResult = new()
             {
@@ -174,7 +190,12 @@ namespace ShapeGeneratorAPI.Controllers
                 return BadRequest("Invalid input. length and width must be positive numbers.");
             }
 
-            var area = _rectangle.CalculateArea(dLength, dWidth);
+            if (dLength > 1000 || dWidth > 1000)
+            {
+                return BadRequest("Invalid input. length and width must not exceed to 1000.");
+            }
+
+            var area = _iRectangle.CalculateArea(dLength, dWidth);
 
             ShapeResult rectangleResult = new()
             {
@@ -206,7 +227,12 @@ namespace ShapeGeneratorAPI.Controllers
                 return BadRequest("Invalid input. sideLength must be positive numbers.");
             }
 
-            var area = _square.CalculateArea(sLength, sLength);
+            if (sLength > 1000)
+            {
+                return BadRequest("Invalid input. sideLength must not exceed to 1000.");
+            }
+
+            var area = _iSquare.CalculateArea(sLength, sLength);
 
             SquareResult squareResult = new()
             {
@@ -238,8 +264,13 @@ namespace ShapeGeneratorAPI.Controllers
                 return BadRequest("Invalid input. height and sideLength must be positive numbers.");
             }
 
-            var area = _square.CalculateArea(dHeight, dSideLength);
-            var angle = _parallelogram.CalculateAngle(dHeight, dSideLength);
+            if (dHeight > 1000 || dSideLength > 1000)
+            {
+                return BadRequest("Invalid input. height and sideLength must not exceed to 1000.");
+            }
+
+            var area = _iParallelogram.CalculateArea(dHeight, dSideLength);
+            var angle = _iParallelogram.CalculateAngle(dHeight, dSideLength);
 
             ParallelogramResult parallelogramResult = new()
             {
@@ -272,9 +303,14 @@ namespace ShapeGeneratorAPI.Controllers
                 return BadRequest("Invalid input. sideLength must be positive numbers.");
             }
 
-            var radius = _pentagon.CalculateRadius(dSideLength);
-            var area = _pentagon.CalculateArea(dSideLength);
-            var perimeter = _pentagon.CalculatePerimeter(dSideLength);
+            if (dSideLength > 1000)
+            {
+                return BadRequest("Invalid input. sideLength must not exceed to 1000.");
+            }
+
+            var radius = _iPentagon.CalculateRadius(dSideLength);
+            var area = _iPentagon.CalculateArea(dSideLength);
+            var perimeter = _iPentagon.CalculatePerimeter(dSideLength);
 
             PentagonResult pentagonResult = new()
             {
@@ -307,9 +343,14 @@ namespace ShapeGeneratorAPI.Controllers
                 return BadRequest("Invalid input. sideLength must be positive numbers.");
             }
 
-            var sumOfAngles = _hexagon.CalculateInternalAngles();
-            var area = _hexagon.CalculateArea(dSideLength);
-            var perimeter = _hexagon.CalculatePerimeter(dSideLength);
+            if (dSideLength > 1000)
+            {
+                return BadRequest("Invalid input. sideLength must not exceed to 1000.");
+            }
+
+            var sumOfAngles = _iHexagon.CalculateInternalAngles();
+            var area = _iHexagon.CalculateArea(dSideLength);
+            var perimeter = _iHexagon.CalculatePerimeter(dSideLength);
 
             HexagonResult hexagonResult = new()
             {
@@ -342,8 +383,13 @@ namespace ShapeGeneratorAPI.Controllers
                 return BadRequest("Invalid input. sideLength must be positive numbers.");
             }
 
-            var area = _heptagon.CalculateArea(dSideLength);
-            var perimeter = _heptagon.CalculatePerimeter(dSideLength);
+            if (dSideLength > 1000)
+            {
+                return BadRequest("Invalid input. sideLength must not exceed to 1000.");
+            }
+
+            var area = _iHeptagon.CalculateArea(dSideLength);
+            var perimeter = _iHeptagon.CalculatePerimeter(dSideLength);
 
             HeptagonResult hexagonResult = new()
             {
@@ -375,8 +421,13 @@ namespace ShapeGeneratorAPI.Controllers
                 return BadRequest("Invalid input. sideLength must be positive numbers.");
             }
 
-            var area = _octagon.CalculateArea(dSideLength);
-            var perimeter = _octagon.CalculatePerimeter(dSideLength);
+            if (dSideLength > 1000)
+            {
+                return BadRequest("Invalid input. sideLength must not exceed to 1000.");
+            }
+
+            var area = _iOctagon.CalculateArea(dSideLength);
+            var perimeter = _iOctagon.CalculatePerimeter(dSideLength);
 
             OctagonResult octagonResult = new()
             {
@@ -408,14 +459,20 @@ namespace ShapeGeneratorAPI.Controllers
                 return BadRequest("Invalid input. diameter must be positive numbers.");
             }
 
-            var radius = _circle.CalculateRadius(dDiameter);
-            var area = _circle.CalculateArea(radius);
-            var circumference = _circle.CalculateCircumference(dDiameter);
+            if (dDiameter > 1000)
+            {
+                return BadRequest("Invalid input. diameter must not exceed to 1000.");
+            }
+
+            var radius = _iCircle.CalculateRadius(dDiameter);
+            var area = _iCircle.CalculateArea(radius);
+            var circumference = _iCircle.CalculateCircumference(dDiameter);
 
             CircleResult circleResult = new()
             {
                 Name = "Circle",
                 IsValidResponse = true,
+                Diameter = dDiameter,
                 Radius = radius,
                 Area = area,
                 Circumference = circumference

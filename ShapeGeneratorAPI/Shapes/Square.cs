@@ -1,6 +1,8 @@
-﻿namespace ShapeGeneratorAPI.Shapes
+﻿using ShapeGeneratorAPI.Interface;
+
+namespace ShapeGeneratorAPI.Shapes
 {
-    public class Square : Shape
+    public class Square : Shape, ISquare
     {
         /// <summary>
         /// Length of Sides of Square shape

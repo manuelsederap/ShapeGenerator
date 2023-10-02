@@ -1,6 +1,8 @@
-﻿namespace ShapeGeneratorAPI.Shapes
+﻿using ShapeGeneratorAPI.Interface;
+
+namespace ShapeGeneratorAPI.Shapes
 {
-    public class Octagon : Shape
+    public class Octagon : Shape, IOctagon
     {
         /// <summary>
         /// Length of sides of octagon shape
