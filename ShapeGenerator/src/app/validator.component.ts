@@ -71,6 +71,35 @@ export abstract class ValidatorComponent {
         }
 
         /// other shapes also, if length is greater than 1000, form is invalid
+      } else if (inputValue.includes('rectangle')) {
+        const matches = this.getRectangleData(inputValue);
+        if (matches) {
+          const length: number = parseInt(matches[1], 10);
+          const width: number = parseInt(matches[2], 10);
+          // if value greater than 1000, form invalid will trigger
+          if (length > 1000 || width > 1000) {
+            return of({ invalidValue: true });
+          }
+        }
+      } else if (inputValue.includes('circle')) {
+        const matches = this.getCircleData(inputValue);
+        if (matches) {
+          const diameter: number = parseInt(matches[1], 10);
+          // if value greater than 1000, form invalid will trigger
+          if (diameter > 1000) {
+            return of({ invalidValue: true });
+          }
+        }
+      } else if (inputValue.includes('parallelogram')) {
+        const matches = this.getParallelogramData(inputValue);
+        if (matches) {
+          const height: number = parseInt(matches[1], 10);
+          const sideLength: number = parseInt(matches[2], 10);
+          // if value greater than 1000, form invalid will trigger
+          if (height > 1000 || sideLength > 1000) {
+            return of({ invalidValue: true });
+          }          
+        }
       } else {
         const matches = this.getShapesData(inputValue);
         if (matches) {
